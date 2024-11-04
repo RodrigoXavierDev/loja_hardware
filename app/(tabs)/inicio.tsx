@@ -1,63 +1,94 @@
-import { View, Text, ScrollView, StyleSheet, Pressable, TextInput, FlatList, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { getAllProducts } from "../../services/product";
-import { ProductItem } from "../../components/product-item";
-import { StatusBar } from 'expo-status-bar';
+import { View, TextInput, StyleSheet, Text, Pressable, FlatList, Image } from "react-native";
+import { useEffect, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import firebase from "../../firebase";
+import { useRouter } from "expo-router";
+
+interface Produto {
+    id: string;
+    idCategory?: string;
+    image?: string;
+    title: string;
+    description?: string;
+    price?: string;
+}
+
+export default function Screen() {
+
+    
+    const router = useRouter();
 
 
+    const [id, setid] = useState("");
+    const [idCategory, setidCategory] = useState("");
+    const [image, setimage] = useState("");
+    const [title, settitle] = useState("");
+    const [description, setdescription] = useState("");
+    const [price, setprice] = useState("");
+    const [produtos, setProdutos] = useState<Produto[]>([]);
+    useEffect(() => {
+        const unsubscribe = firebase.firestore().collection('produtos').onSnapshot((snapshot) => {
+            const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Produto));
+            setProdutos(data);
+        });
+        return () => unsubscribe();
+    }, []);
 
-export default function Inicio() {
-    const products = getAllProducts();
+    const renderProdutos = ({ item }: { item: Produto }) => (
+        <Pressable style={styles.produto} onPress={() => router.push(`/categories/${item.id}`)}>
+            <Image source={{ uri: item.image }} style={styles.imagem} />
+            <Text>{item.title}</Text>
+            <Text>{item.description}</Text>
+            <Text>R$ {item.price}</Text>
+        </Pressable>
+    );
 
     return (
-        <SafeAreaView style={Style.container}>
-            <StatusBar />
-            <View style={Style.barraPesquisa}>
-                <TextInput placeholder="Pesquisar"></TextInput>
-            </View>
-            <View style={Style.produtos}>
+        <SafeAreaView style={styles.fundo}>
+            <View style={styles.container}>
                 <FlatList
-                    data={products}
-                    renderItem={({ item }) => <ProductItem data={item} />}
-                    keyExtractor={(item) => item.id.toString()}
-                    style={Style.list}
+                    data={produtos}
+                    renderItem={renderProdutos}
+                    keyExtractor={(item) => item.id}
                     numColumns={2}
-                    showsVerticalScrollIndicator={false}
-                    columnWrapperStyle={Style.row}
+                    contentContainerStyle={styles.listContent}
                 />
             </View>
         </SafeAreaView>
     );
 }
 
-const Style = StyleSheet.create({
-    container: {
+const styles = StyleSheet.create({
+    fundo: {
         flex: 1,
-        backgroundColor: '#000000',
-        alignItems: 'center',
+        backgroundColor: "#000"
     },
-    barraPesquisa: {
-        width: '95%',
-        height: 40,
+    container: {
+        alignItems: "center"
+    },
+    produto: {
+        backgroundColor: "#ffffff",
+        height: 240,
+        width: 180,
+        alignItems: "center",
+        justifyContent: "center",
         borderRadius: 10,
-        marginBottom: 10,
-        justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
-        paddingHorizontal: 10,
+        marginHorizontal: 8,
+        marginVertical: 8,
+        padding: 10
+
     },
     list: {
+        flex: 1,
         width: '100%',
+        padding: 20,
     },
-    produtos: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 10,
-        marginBottom: 10,
-        marginHorizontal: 10,
-        justifyContent: 'center',
-        paddingHorizontal: 10,
+    listContent: {
+        paddingBottom: 20,
     },
-    row: {
-        justifyContent: 'space-between',
-    }
-})
+    imagem: {
+        width: 120,
+        height: 120,
+        borderRadius: 10
+    },
+});

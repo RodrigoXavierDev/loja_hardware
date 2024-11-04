@@ -9,10 +9,10 @@ export default function Menu() {
             <View style={styles.cabecalho}>
                 <Text style={styles.h1}>Menu</Text>
             </View>
-            <Link href={"../../../configuracao"} asChild={true}>
+            <Link href={"../../../editar"} asChild={true}>
                 <Pressable style={styles.opcao}>
                     <Image source={require('../../../assets/configuracao.png')} style={styles.icone} />
-                    <Text style={styles.h1}>Configurações</Text>
+                    <Text style={styles.h1}>Editar</Text>
                 </Pressable>
             </Link>
             <Link href={"../../../carrinho"} asChild={true}>
