@@ -32,11 +32,11 @@ Um aplicativo de marketplace para comprar e vender peças de computador, desenvo
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/nome-do-repositorio.git
+   git clone [https://github.com/seu-usuario/nome-do-repositorio.git](https://github.com/RodrigoXavierDev/loja_hardware.git)
    ```
 2. Instale as dependências:
    ```bash
-   cd nome-do-repositorio
+   cd loja_hardware
    npm install
    ```
 3. Conecte o projeto ao Firebase configurando as credenciais.
