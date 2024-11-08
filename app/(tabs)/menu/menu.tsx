@@ -15,12 +15,6 @@ export default function Menu() {
                     <Text style={styles.h1}>Editar</Text>
                 </Pressable>
             </Link>
-            <Link href={"../../../carrinho"} asChild={true}>
-                <Pressable style={styles.opcao}>
-                    <Image source={require('../../../assets/carrinho.png')} style={styles.icone} />
-                    <Text style={styles.h1}>Carrinho</Text>
-                </Pressable>
-            </Link>
             <Link href={"../../../usuario"} asChild={true}>
             <Pressable style={styles.opcao}>
                 <Image source={require('../../../assets/usuario.png')} style={styles.icone} />
@@ -29,7 +23,6 @@ export default function Menu() {
             </Link>
         </SafeAreaView>
     )
-
 }
 
 const styles = StyleSheet.create({

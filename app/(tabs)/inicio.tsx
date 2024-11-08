@@ -1,4 +1,4 @@
-import { View, TextInput, StyleSheet, Text, Pressable, FlatList, Image } from "react-native";
+import { View, StyleSheet, Text, Pressable, FlatList, Image } from "react-native";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import firebase from "../../firebase";
@@ -35,11 +35,14 @@ export default function Screen() {
     }, []);
 
     const renderProdutos = ({ item }: { item: Produto }) => (
-        <Pressable style={styles.produto} onPress={() => router.push(`/categories/${item.id}`)}>
+        <Pressable style={styles.produto} onPress={() => router.push(`/produtos/${item.id}`)}>
             <Image source={{ uri: item.image }} style={styles.imagem} />
             <Text>{item.title}</Text>
             <Text>{item.description}</Text>
             <Text>R$ {item.price}</Text>
+            <View style={styles.botao}>
+                <Text>Comprar</Text>
+            </View>
         </Pressable>
     );
 
@@ -68,13 +71,13 @@ const styles = StyleSheet.create({
     },
     produto: {
         backgroundColor: "#ffffff",
-        height: 240,
-        width: 180,
+        height: 280,
+        width: 165,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,
-        marginHorizontal: 8,
-        marginVertical: 8,
+        marginHorizontal: 10,
+        marginVertical: 10,
         padding: 10
 
     },
@@ -87,8 +90,17 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     imagem: {
-        width: 120,
-        height: 120,
+        width: 125,
+        height: 125,
         borderRadius: 10
     },
+    botao: {
+        width: 100,
+        height: 30,
+        borderRadius: 10,
+        marginVertical: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#e0e0e0'
+    }
 });
